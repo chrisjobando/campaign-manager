@@ -7,4 +7,7 @@ export const loginRoutes: Route[] = [
 	{ path: '/login', title: 'Login' },
 	{ path: '/register', title: 'Register' }
 ];
-export const authRoutes: Route[] = [{ path: '/', title: 'Home' }];
+export const authRoutes: Route[] = [
+	{ path: '/', title: 'Home' },
+	{ path: '/inventory', title: 'Inventory' }
+];
