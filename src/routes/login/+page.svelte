@@ -29,7 +29,7 @@
 
 			<p class="mt-2">Don't have an account? <a href="/register" class="link">Sign up</a></p>
 
-			{#if form?.invalidCredentials}
+			{#if form?.errors}
 				<p class="alert alert-error shadow-lg w-full max-w-md">Invalid credentials</p>
 			{/if}
 		</form>

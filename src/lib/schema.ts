@@ -41,3 +41,18 @@ export const loginUserSchema = z.object({
 		.email({ message: 'Email must be a valid email.' }),
 	password: z.string({ required_error: 'Password is required' })
 });
+
+export const updateCurrencyData = z.object({
+	platinum: z
+		.preprocess((a) => parseInt(z.string().parse(a as string), 10), z.number().min(0).max(9999))
+		.default(0),
+	gold: z
+		.preprocess((a) => parseInt(z.string().parse(a as string), 10), z.number().min(0).max(9999))
+		.default(0),
+	silver: z
+		.preprocess((a) => parseInt(z.string().parse(a as string), 10), z.number().min(0).max(9999))
+		.default(0),
+	copper: z
+		.preprocess((a) => parseInt(z.string().parse(a as string), 10), z.number().min(0).max(9999))
+		.default(0)
+});

@@ -1,7 +1,7 @@
-import { CAMPAIGN_CURRENCY_ID } from '$env/static/private';
-import { getCurrency, getUsersCurrency } from '$lib/services/CurrencyService';
+import { PARTY_CURRENCY_ID } from '$env/static/private';
+import { getCurrency, getUsersCurrency, updateCurrency } from '$lib/services/CurrencyService';
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
 	if (!locals.pb.authStore.isValid) {
@@ -10,6 +10,19 @@ export const load = (async ({ locals }) => {
 
 	return {
 		currency: await getUsersCurrency(locals),
-		campaignCurrency: await getCurrency(locals, CAMPAIGN_CURRENCY_ID)
+		partyCurrency: await getCurrency(locals, PARTY_CURRENCY_ID)
 	};
 }) satisfies PageServerLoad;
+
+export const actions: Actions = {
+	updateCurrency: async ({ locals, request }) => {
+		if (!locals.user) {
+			throw error(401, 'You must be logged in to access this resource');
+		}
+
+		return await updateCurrency(locals, request, locals.user.currencyId);
+	},
+	updatePartyCurrency: async ({ locals, request }) => {
+		return await updateCurrency(locals, request, PARTY_CURRENCY_ID);
+	}
+};

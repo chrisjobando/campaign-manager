@@ -1,5 +1,6 @@
+import { updateCurrencyData } from '$lib/schema';
 import type { Currency } from '$lib/types';
-import { serializeNonPOJOs } from '$lib/utils';
+import { serializeNonPOJOs, validateFormData } from '$lib/utils';
 import { error } from '@sveltejs/kit';
 import { ClientResponseError } from 'pocketbase';
 
@@ -33,6 +34,21 @@ export const getUsersCurrency = async (locals: App.Locals) => {
 			throw error(err.status, err.data.message);
 		} else {
 			throw error(500, 'Something went wrong getting the currency object');
+		}
+	}
+};
+
+export const updateCurrency = async (locals: App.Locals, request: Request, currencyId: string) => {
+	const data = await request.formData();
+	const { formData } = await validateFormData(data, updateCurrencyData);
+
+	try {
+		await locals.pb.collection('currency').update(currencyId, formData);
+	} catch (err) {
+		if (err instanceof ClientResponseError) {
+			throw error(err.status, err.data.message);
+		} else {
+			throw error(500, 'Something went wrong updating the currency object');
 		}
 	}
 };
